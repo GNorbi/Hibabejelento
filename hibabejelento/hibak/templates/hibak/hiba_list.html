@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    {% if hiba_list %}
+        <h1>Hibabejelentesek</h1>
+    {% for hiba in hiba_list %}
+    <div class="w3-container w3-padding-16">
+        <div class="w3-card-4">
+            <header class="w3-container w3-blue">
+                <h1 class="w3-center">Azonosito: {{ hiba.id }}</h1>
+                <h3>Kapcsolattarto email cime: {{ hiba.kapcsolattarto_email }}</h3>
+                <h3>Keletkezett hiba cime: {{ hiba.cim }}</h3>
+                {% if hiba.statusz == 'e'%}
+                <h3>Allapot: Elkuldve</h3>
+                {% elif hiba.statusz == 'f' %}
+                <h3>Allapot: Fogadva</h3>
+                {% elif hiba.statusz == 'h' %}
+                <h3>Allapot: Elharitva</h3>
+                {% else %}
+                <h3>Allapot: Visszaigazolva</h3>
+                {% endif %}
+            </header>
+
+            <div class="w3-container w3-padding-16">
+                <p>{{ hiba.leiras }}</p>
+            </div>
+
+            <footer href="{{ hiba.get_absolute_url }}" class="w3-container w3-blue">
+                <h5>Footer</h5>
+            </footer>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+        <p>Nincsennek hibabejelentesek!</p>
+    {% endif %}
+    {% else %}
+        <h1>Bejelentkezes szukseges!</h1>
+        <div class="w3-button w3-green" href="{% url 'login' %}">Bejelentkezes</div>
+    {% endif %}
+{% endblock %}
